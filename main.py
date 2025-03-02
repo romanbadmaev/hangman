@@ -1,10 +1,7 @@
-# функция загадывания слов
 from words import guess_word
-# функция прорисовки выселицы и человечка
 from ascii import draw_hangman
 
 game_over = False # условие выхода из игры
-# строка с буквами русского алфавита
 cyrillic = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ-" # буквы русского алфавита
 
 def play_game(*, word: str):
@@ -21,17 +18,12 @@ def play_game(*, word: str):
     global fiasco
 
     draw_hangman(mistakes=mistakes_number)
-    print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {
-    wrong_letters if wrong_letters else ""}", )
-
-    # ввод буквы - ответа:
-    letter = input(f"Слово: {masked_word}. Назовите букву: ")
-    while not letter.upper() in cyrillic:
+    print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {wrong_letters if wrong_letters else ""}")
+    letter = input(f"Слово: {masked_word}. Назовите букву: ") # ввод буквы - ответа:
+    while not letter.upper() in cyrillic: # проверка корректности вводимых символов
         letter = input("Допускаются только буквы русского алфавита. Назовите букву: ")
     letter = letter.upper()
-
-    # есть ли в загаданном слове введенная буква
-    if letter in word:
+    if letter in word: # есть ли в загаданном слове введенная буква
         right_letters.add(letter)
         for index, value in enumerate(word):
             if value in letter:
@@ -46,16 +38,15 @@ def play_game(*, word: str):
             fiasco = True
 
 
-# заставка
-draw_hangman(mistakes=0)
+draw_hangman(mistakes=0) # заставка
 # запуск и перезапуск игры
 while not game_over:
     print("Сыграем в игру?")
     print("Напишите (да / нет): ", end="")
     play_again = input()
     if play_again.upper() in ["ДА", "Д", "YES", "Y"]:
-        victory, fiasco = False, False
         word, masked_word = guess_word()
+        victory, fiasco = False, False
         mistakes_number = 0
         wrong_letters = set()
         right_letters = set()
