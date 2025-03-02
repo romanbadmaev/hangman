@@ -1,27 +1,36 @@
+# coding: utf-8
 from random import choice, randint
 
-# создание списка слов для игры из текстового файла
-words = [] # пустой список под слова
-# файл со словами
-file = open("russian_nouns.txt")
-# добавляем в множество из файла слова длинее 5 букв
-for line in file:
-    if len(line) > 6:
-        words.append(line[:-1])
-file.close()
+def get_words_list(*, file_name: str) -> list:
+    """
+    Cоздание списка слов для игры из текстового файла
+    :param file_name: имя текстового файла
+    :return: список слов для игры
+    """
+    words = []
+    with open(file_name, encoding="utf-8") as file:
+        for line in file:
+            if len(line) > 6:
+                words.append(line[:-1])
+    return words
 
-#word = choice(words).upper() # загадываем слово из списка
 
-# нужно написать функцию которая маскирует
-# все буквы в слове кроме двух:
-def get_word():
+def guess_word() -> tuple[str, str]:
+    '''
+    функция которая загадывает слово для текущей игры и маскирует его
+    :return: word - загаданное слово
+             masked_word - загаданное слово, где замаскированны все буквы кроме двух
+    '''
     word = choice(words).upper()
-    visible_letter_1 = randint(0, len(word) - 1)
-    visible_letter_2 = randint(0, len(word) - 1)
+    displayed_item_1 = randint(0, len(word) - 1)
+    displayed_item_2 = randint(0, len(word) - 1)
     masked_word = word
-    while visible_letter_1 == visible_letter_2:
-        visible_letter_2 = randint(1, len(word))
+    while displayed_item_1 == displayed_item_2:
+        displayed_item_2 = randint(1, len(word))
     for i in range(len(word)):
-        if i != visible_letter_1 and i != visible_letter_2:
+        if i != displayed_item_1 and i != displayed_item_2:
             masked_word = masked_word[:i] + "_" + masked_word[i + 1:]
     return word, masked_word
+
+
+words = get_words_list(file_name="russian_nouns.txt")

@@ -5,10 +5,14 @@ from ascii import draw_hangman
 
 game_over = False # условие выхода из игры
 # строка с буквами русского алфавита
-cyrillic = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ-"
+cyrillic = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ-" # буквы русского алфавита
 
-# функция которая ведет игру
-def play_game(word):
+def play_game(*, word: str):
+    """
+    функция которая ведет игру
+    :param word: загаданное слово
+    :return:
+    """
     global mistakes_number
     global wrong_letters
     global right_letters
@@ -16,7 +20,7 @@ def play_game(word):
     global victory
     global fiasco
 
-    draw_hangman(mistakes_number)
+    draw_hangman(mistakes=mistakes_number)
     print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {
     wrong_letters if wrong_letters else ""}", )
 
@@ -41,8 +45,9 @@ def play_game(word):
         if mistakes_number > 5:
             fiasco = True
 
+
 # заставка
-draw_hangman(0)
+draw_hangman(mistakes=0)
 # запуск и перезапуск игры
 while not game_over:
     print("Сыграем в игру?")
@@ -55,9 +60,9 @@ while not game_over:
         wrong_letters = set()
         right_letters = set()
         while not victory and not fiasco:
-            play_game(word)
+            play_game(word=word)
         else:
-            draw_hangman(mistakes_number)
+            draw_hangman(mistakes=mistakes_number)
             print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {
             wrong_letters if wrong_letters else ""}")
             if victory:
