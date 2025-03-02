@@ -1,7 +1,7 @@
 # coding: utf-8
 from random import choice, randint
 
-def get_words_list(*, file_name: str) -> list:
+def get_words_list(*, file_name:str="russian_nouns.txt") -> list:
     """
     Cоздание списка слов для игры из текстового файла
     :param file_name: имя текстового файла

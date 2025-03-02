@@ -1,5 +1,5 @@
 # функция загадывания слов
-from words import get_word
+from words import guess_word
 # функция прорисовки выселицы и человечка
 from ascii import draw_hangman
 
@@ -55,7 +55,7 @@ while not game_over:
     play_again = input()
     if play_again.upper() in ["ДА", "Д", "YES", "Y"]:
         victory, fiasco = False, False
-        word, masked_word = get_word()
+        word, masked_word = guess_word()
         mistakes_number = 0
         wrong_letters = set()
         right_letters = set()

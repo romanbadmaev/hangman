@@ -1,7 +1,7 @@
 # coding: utf-8
 import json
 
-def load_hangman_images(*, file_name: str) -> dict[str: str]:
+def load_hangman_images(*, file_name:str="ascii.json") -> dict[str: str]:
     """
     загружаем из файла .json словарь с ascii - картинками виселицы
     :param file_name: - имя файла .json
