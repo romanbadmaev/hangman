@@ -3,7 +3,8 @@ from random import choice, randint
 
 def get_words_list(*, file_name:str="russian_nouns.txt") -> list:
     """
-    Cоздание списка слов для игры из текстового файла
+    Функция считывает слова из текстового файла, и если они длиннее
+    6 букв добавляет их в список слов для игры
     :param file_name: имя текстового файла
     :return: список слов для игры
     """
@@ -17,9 +18,8 @@ def get_words_list(*, file_name:str="russian_nouns.txt") -> list:
 
 def guess_word() -> tuple[str, str]:
     '''
-    функция которая загадывает слово для текущей игры и маскирует его
-    :return: word - загаданное слово
-             masked_word - загаданное слово, где замаскированны все буквы кроме двух
+    функция которая загадывает слово для текущей игры
+    :return word: - загаданное слово
     '''
     word = choice(words).upper()
     displayed_item_1 = randint(0, len(word) - 1)

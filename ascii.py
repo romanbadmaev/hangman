@@ -1,5 +1,5 @@
 # coding: utf-8
-import json
+from json import loads
 
 def load_hangman_images(*, file_name:str="ascii.json") -> dict[str: str]:
     """
@@ -9,7 +9,7 @@ def load_hangman_images(*, file_name:str="ascii.json") -> dict[str: str]:
     """
     with open(file_name, "r") as json_file:
         json_string = json_file.read()
-        loaded_dict = json.loads(json_string)
+        loaded_dict = loads(json_string)
     return loaded_dict
 
 
