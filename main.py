@@ -70,13 +70,28 @@ def mask_word(*, word) -> str:
 
 
 def draw_hangman(img_dict, mistakes):
+    """ Функция выводит изображение виселицы и человечка """
     if mistakes < 6:
         print(img_dict[str(mistakes)], end="")
     else:
         print(img_dict["6"], end="")
 
 
-def read_char(word, masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat):
+def read_char(word, masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat) -> tuple:
+    """
+    Функция считывает символ с клавиатуры. Проверяет что это буква русского алфавита.
+    Если буква есть в загаданном слове, то добавляет букву в множество правильных ответов
+    и открывает его в замаскированном слове.
+    Если в загаданном слове нет такой буквы, то она добавляется в множество неправильных
+    ответов и число ошибок увеличивается на единицу.
+    Если в загаданном слове отгаданы все буквы игрок победил.
+    Если ошибок больше пяти, то игрок проиграл.
+    :param mistakes_number: количество ошибок
+    :param wrong_letters: множество неправильных ответов
+    :param right_letters: множество правильных ответов
+    :param is_victory: указатель победы
+    :param is_defeat: указатель поражения
+    """
     CYRILLIC = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ-"
     print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {wrong_letters if wrong_letters else ""}")
     letter = input(f"Слово: {masked_word}. Назовите букву: ")
@@ -100,12 +115,14 @@ def read_char(word, masked_word, mistakes_number, wrong_letters, right_letters, 
 
 
 def report_victory(ascii_dict, mistakes_number, wrong_letters, mystery_word):
+    """ Функция поздравляет с победой """
     draw_hangman(img_dict=ascii_dict, mistakes=mistakes_number)
     print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {wrong_letters if wrong_letters else ""}")
     print(f"Слово: {mystery_word}! Миссия выполнена!")
 
 
 def report_defeat(ascii_dict, mistakes_number, wrong_letters, mystery_word):
+    """ Функция уведомляет о поражении """
     draw_hangman(img_dict=ascii_dict, mistakes=6)
     print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {wrong_letters if wrong_letters else ""}")
     print(f"Слово: {mystery_word}! Миссия провалена!")
@@ -125,6 +142,12 @@ def play_again() -> bool:
 
 
 def play_game(words, ascii_dict) -> bool:
+    """
+    Функция загадывает слово и запрашивает буквы, до победы или поражения.
+    После предлагает сыграть еще раз.
+    :param words: множество слов для игры
+    :param ascii_dict: словарь с ascii - картинками
+    """
     mystery_word = choose_word(words_list=words)
     masked_word = mask_word(word=mystery_word)
     mistakes_number = 0
@@ -143,6 +166,7 @@ def play_game(words, ascii_dict) -> bool:
 
 
 def say_good_bye():
+    """ Функция прощается с игроком """
     print("До свидания! Будем ждать вас в игре!")
 
 
