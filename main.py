@@ -62,7 +62,7 @@ def mask_word(*, word) -> str:
     displayed_item_2 = randint(0, len(word) - 1)
     hidden_word = word
     while displayed_item_1 == displayed_item_2 or word[displayed_item_1] == word[displayed_item_2]:
-        displayed_item_2 = randint(1, len(word))
+        displayed_item_2 = randint(1, len(word) - 1)
     for i in range(len(word)):
         if i != displayed_item_1 and i != displayed_item_2:
             hidden_word = hidden_word[:i] + "_" + hidden_word[i + 1:]
