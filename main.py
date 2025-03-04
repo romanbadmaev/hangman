@@ -8,7 +8,7 @@ def start_game() -> bool:
     :return is_quit_game: указатель отказа от игры
     """
     wanna_play = input("Сыграем в игру? (да / нет): ")
-    if wanna_play in {"ДА", "Д", "YES", "Y"}:
+    if wanna_play.upper() in {"ДА", "Д", "YES", "Y"}:
         is_quit_game = False
     else:
         is_quit_game = True
@@ -61,7 +61,7 @@ def mask_word(*, word) -> str:
     displayed_item_1 = randint(0, len(word) - 1)
     displayed_item_2 = randint(0, len(word) - 1)
     hidden_word = word
-    while displayed_item_1 == displayed_item_2:
+    while displayed_item_1 == displayed_item_2 or word[displayed_item_1] == word[displayed_item_2]:
         displayed_item_2 = randint(1, len(word))
     for i in range(len(word)):
         if i != displayed_item_1 and i != displayed_item_2:
@@ -88,8 +88,8 @@ def read_char(word, masked_word, mistakes_number, wrong_letters, right_letters, 
         for index, value in enumerate(word):
             if value in letter:
                 masked_word = (masked_word[:index] + letter + masked_word[index + 1:])
-    if masked_word == word:
-        is_victory = True
+        if masked_word == word:
+            is_victory = True
     else:
         if not letter in wrong_letters:
             wrong_letters.add(letter)
@@ -117,13 +117,14 @@ def play_again() -> bool:
     :return: указатель выхода из игры
     """
     wanna_play = input("Сыграем еще раз? (да / нет): ")
-    if wanna_play in {"ДА", "Д", "YES", "Y"}:
+    if wanna_play.upper() in {"ДА", "Д", "YES", "Y"}:
         is_quit_game = False
     else:
         is_quit_game = True
     return is_quit_game
 
-def play_game(is_game_over):
+
+def play_game(words, ascii_dict) -> bool:
     mystery_word = choose_word(words_list=words)
     masked_word = mask_word(word=mystery_word)
     mistakes_number = 0
@@ -132,12 +133,14 @@ def play_game(is_game_over):
     while not is_victory and not is_defeat:
         draw_hangman(img_dict=ascii_dict, mistakes=mistakes_number)
         masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat\
-            = read_char(word, masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat)
+            = read_char(mystery_word, masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat)
     if is_victory:
         report_victory(ascii_dict, mistakes_number, wrong_letters, mystery_word)
     if is_defeat:
         report_defeat(ascii_dict, mistakes_number, wrong_letters, mystery_word)
     is_game_over = play_again()
+    return is_game_over
+
 
 def say_good_bye():
     print("До свидания! Будем ждать вас в игре!")
@@ -147,9 +150,9 @@ def main():
     is_game_over = start_game()
     if not is_game_over:
         words = read_words_file(file_name="russian_nouns.txt")
-        ascii_dict = read_ascii_file()
+        ascii_dict = read_ascii_file(file_name="ascii.json")
         while not is_game_over:
-            is_game_over = play_game()
+            is_game_over = play_game(words=words, ascii_dict=ascii_dict)
     say_good_bye()
 
 
