@@ -76,16 +76,39 @@ def draw_hangman(img_dict, mistakes):
         print(img_dict["6"], end="")
 
 
-def read_char():
-    pass
+def read_char(word, masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat):
+    CYRILLIC = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ-"
+    print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {wrong_letters if wrong_letters else ""}")
+    letter = input(f"Слово: {masked_word}. Назовите букву: ")
+    while not letter.upper() in CYRILLIC:
+        letter = input("Допускаются только буквы русского алфавита. Назовите букву: ")
+    letter = letter.upper()
+    if letter in word:
+        right_letters.add(letter)
+        for index, value in enumerate(word):
+            if value in letter:
+                masked_word = (masked_word[:index] + letter + masked_word[index + 1:])
+    if masked_word == word:
+        is_victory = True
+    else:
+        if not letter in wrong_letters:
+            wrong_letters.add(letter)
+            mistakes_number += 1
+        if mistakes_number > 5:
+            is_defeat = True
+    return (masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat)
 
 
-def report_victory():
-    pass
+def report_victory(ascii_dict, mistakes_number, wrong_letters, mystery_word):
+    draw_hangman(img_dict=ascii_dict, mistakes=mistakes_number)
+    print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {wrong_letters if wrong_letters else ""}")
+    print(f"Слово: {mystery_word}! Миссия выполнена!")
 
 
-def report_defeat():
-    pass
+def report_defeat(ascii_dict, mistakes_number, wrong_letters, mystery_word):
+    draw_hangman(img_dict=ascii_dict, mistakes=6)
+    print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {wrong_letters if wrong_letters else ""}")
+    print(f"Слово: {mystery_word}! Миссия провалена!")
 
 
 def play_again() -> bool:
@@ -103,17 +126,21 @@ def play_again() -> bool:
 def play_game(is_game_over):
     mystery_word = choose_word(words_list=words)
     masked_word = mask_word(word=mystery_word)
+    mistakes_number = 0
+    wrong_letters, right_letters = set(), set()
+    is_victory, is_defeat = False, False
     while not is_victory and not is_defeat:
         draw_hangman(img_dict=ascii_dict, mistakes=mistakes_number)
-        read_char()
+        masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat\
+            = read_char(word, masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat)
     if is_victory:
-        report_victory()
+        report_victory(ascii_dict, mistakes_number, wrong_letters, mystery_word)
     if is_defeat:
-        report_defeat()
+        report_defeat(ascii_dict, mistakes_number, wrong_letters, mystery_word)
     is_game_over = play_again()
 
 def say_good_bye():
-    pass
+    print("До свидания! Будем ждать вас в игре!")
 
 
 def main():
