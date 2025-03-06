@@ -69,7 +69,7 @@ def mask_word(*, word) -> str:
     return hidden_word
 
 
-def draw_hangman(img_dict, mistakes):
+def draw_hangman(img_dict, mistakes) -> None:
     """ Функция выводит изображение виселицы и человечка """
     if mistakes < 6:
         print(img_dict[str(mistakes)], end="")
@@ -114,14 +114,14 @@ def read_char(word, masked_word, mistakes_number, wrong_letters, right_letters, 
     return (masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat)
 
 
-def report_victory(ascii_dict, mistakes_number, wrong_letters, mystery_word):
+def report_victory(ascii_dict, mistakes_number, wrong_letters, mystery_word) -> None:
     """ Функция поздравляет с победой """
     draw_hangman(img_dict=ascii_dict, mistakes=mistakes_number)
     print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {wrong_letters if wrong_letters else ""}")
     print(f"Слово: {mystery_word}! Миссия выполнена!")
 
 
-def report_defeat(ascii_dict, mistakes_number, wrong_letters, mystery_word):
+def report_defeat(ascii_dict, mistakes_number, wrong_letters, mystery_word) -> None:
     """ Функция уведомляет о поражении """
     draw_hangman(img_dict=ascii_dict, mistakes=6)
     print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {wrong_letters if wrong_letters else ""}")
@@ -165,7 +165,7 @@ def play_game(words, ascii_dict) -> bool:
     return is_game_over
 
 
-def say_good_bye():
+def say_good_bye() -> None:
     """ Функция прощается с игроком """
     print("До свидания! Будем ждать вас в игре!")
 
