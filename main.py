@@ -3,8 +3,7 @@ from random import choice, randint
 from json import loads
 
 def start_game() -> bool:
-    """
-    Функция предлагает сыграть в игру
+    """Функция предлагает сыграть в игру
     :return is_quit_game: указатель отказа от игры
     """
     wanna_play = input("Сыграем в игру? (да / нет): ")
@@ -16,9 +15,8 @@ def start_game() -> bool:
 
 
 def read_words_file(*, file_name) -> list[str]:
-    """
-    Функция считывает слова из текстового файла
-    и добоавляет их в список слов для игры
+    """Функция считывает слова из текстового файла
+    и добавляет их в список слов для игры
     :param file_name: файл со словами
     :return words_list: список слов для игры
     """
@@ -28,8 +26,7 @@ def read_words_file(*, file_name) -> list[str]:
 
 
 def read_ascii_file(*, file_name) -> dict[str:str]:
-    """
-    Функция считывает ascii - картинки из .json файла и добавляет в словарь
+    """Функция считывает ascii - картинки из .json файла и добавляет в словарь
     :param file_name: файл с ascii - картинками
     :return: словарь с ascii - картинками для изображения виселицы и человечка
     """
@@ -40,12 +37,11 @@ def read_ascii_file(*, file_name) -> dict[str:str]:
 
 
 def choose_word(*, words_list) -> str:
-    '''
-    Функция загадывает слово для текущей игры.
+    """Функция загадывает слово для текущей игры.
     Слово должно быть длинее 5 букв.
     :param words_list: множество слов для игры
     :return: - загаданное слово
-    '''
+    """
     word = ""
     while len(word) < 6:
         word = choice(words_list).upper()[:-1]
@@ -53,15 +49,17 @@ def choose_word(*, words_list) -> str:
 
 
 def mask_word(*, word) -> str:
-    """
-    Функция маскирует в указанном слове все буквы кроме двух
+    """Функция маскирует в указанном слове все буквы кроме двух
     :param word: выбранное слово
     :return: маскированное слово
     """
     displayed_item_1 = randint(0, len(word) - 1)
     displayed_item_2 = randint(0, len(word) - 1)
     hidden_word = word
-    while displayed_item_1 == displayed_item_2 or word[displayed_item_1] == word[displayed_item_2]:
+    while (
+        displayed_item_1 == displayed_item_2 or
+        word[displayed_item_1] == word[displayed_item_2]
+        ):
         displayed_item_2 = randint(1, len(word) - 1)
     for i in range(len(word)):
         if i != displayed_item_1 and i != displayed_item_2:
@@ -70,16 +68,18 @@ def mask_word(*, word) -> str:
 
 
 def draw_hangman(img_dict, mistakes) -> None:
-    """ Функция выводит изображение виселицы и человечка """
+    """Функция выводит изображение виселицы и человечка"""
     if mistakes < 6:
         print(img_dict[str(mistakes)], end="")
     else:
         print(img_dict["6"], end="")
 
 
-def read_char(word, masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat) -> tuple:
-    """
-    Функция считывает символ с клавиатуры. Проверяет что это буква русского алфавита.
+def read_char(
+        word, masked_word, mistakes_number,
+        wrong_letters, right_letters,
+        is_victory, is_defeat) -> tuple:
+    """Функция считывает символ с клавиатуры. Проверяет что это буква русского алфавита.
     Если буква есть в загаданном слове, то добавляет букву в множество правильных ответов
     и открывает его в замаскированном слове.
     Если в загаданном слове нет такой буквы, то она добавляется в множество неправильных
@@ -115,22 +115,21 @@ def read_char(word, masked_word, mistakes_number, wrong_letters, right_letters, 
 
 
 def report_victory(ascii_dict, mistakes_number, wrong_letters, mystery_word) -> None:
-    """ Функция поздравляет с победой """
+    """Функция поздравляет с победой"""
     draw_hangman(img_dict=ascii_dict, mistakes=mistakes_number)
     print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {wrong_letters if wrong_letters else ""}")
     print(f"Слово: {mystery_word}! Миссия выполнена!")
 
 
 def report_defeat(ascii_dict, mistakes_number, wrong_letters, mystery_word) -> None:
-    """ Функция уведомляет о поражении """
+    """Функция уведомляет о поражении"""
     draw_hangman(img_dict=ascii_dict, mistakes=6)
     print(f"Ошибки: {mistakes_number} из 6. Неверные ответы: {wrong_letters if wrong_letters else ""}")
     print(f"Слово: {mystery_word}! Миссия провалена!")
 
 
 def play_again() -> bool:
-    """
-    Функция предлагает сыграть еще раз
+    """Функция предлагает сыграть еще раз
     :return: указатель выхода из игры
     """
     wanna_play = input("Сыграем еще раз? (да / нет): ")
@@ -142,8 +141,7 @@ def play_again() -> bool:
 
 
 def play_game(words, ascii_dict) -> bool:
-    """
-    Функция загадывает слово и запрашивает буквы, до победы или поражения.
+    """Функция загадывает слово и запрашивает буквы, до победы или поражения.
     После предлагает сыграть еще раз.
     :param words: множество слов для игры
     :param ascii_dict: словарь с ascii - картинками
@@ -155,8 +153,8 @@ def play_game(words, ascii_dict) -> bool:
     is_victory, is_defeat = False, False
     while not is_victory and not is_defeat:
         draw_hangman(img_dict=ascii_dict, mistakes=mistakes_number)
-        masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat\
-            = read_char(mystery_word, masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat)
+        masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat = read_char(
+            mystery_word, masked_word, mistakes_number, wrong_letters, right_letters, is_victory, is_defeat)
     if is_victory:
         report_victory(ascii_dict, mistakes_number, wrong_letters, mystery_word)
     if is_defeat:
@@ -166,7 +164,7 @@ def play_game(words, ascii_dict) -> bool:
 
 
 def say_good_bye() -> None:
-    """ Функция прощается с игроком """
+    """Функция прощается с игроком"""
     print("До свидания! Будем ждать вас в игре!")
 
 
