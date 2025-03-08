@@ -17,16 +17,13 @@ def start_game() -> bool:
 
 def read_words_file(*, file_name) -> list[str]:
     """
-    Функция считывает слова длинее 6 букв из текстового файла
+    Функция считывает слова из текстового файла
     и добоавляет их в список слов для игры
     :param file_name: файл со словами
     :return words_list: список слов для игры
     """
-    words_list = []
     with open(file_name, encoding="utf-8") as file:
-        for line in file:
-            if len(line) > 6:
-                words_list.append(line[:-1])
+        words_list = file.readlines()
     return words_list
 
 
@@ -44,11 +41,14 @@ def read_ascii_file(*, file_name) -> dict[str:str]:
 
 def choose_word(*, words_list) -> str:
     '''
-    Функция загадывает слово для текущей игры
+    Функция загадывает слово для текущей игры.
+    Слово должно быть длинее 5 букв.
     :param words_list: множество слов для игры
     :return: - загаданное слово
     '''
-    word = choice(words_list).upper()
+    word = ""
+    while len(word) < 6:
+        word = choice(words_list).upper()[:-1]
     return word
 
 
